@@ -55,4 +55,11 @@ public class PlayerScript : MonoBehaviour
               transform.position.z
               ); 
   }
+
+  void OnDestroy()
+  {
+    // Game Over
+    // Add it to the parent, as this game object is likely to be destroyed immediately
+    transform.parent.gameObject.AddComponent<GameOverScript>();
+  }
 }
