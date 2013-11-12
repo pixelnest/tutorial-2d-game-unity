@@ -27,5 +27,18 @@ public class PlayerScript : MonoBehaviour
 
     // 4 - Move the game object
     transform.Translate(movement);
+
+    // 5 - Shooting
+    bool shoot = Input.GetButtonDown("Fire1");
+    shoot |= Input.GetButtonDown("Fire2"); // For Mac users, ctrl + arrow is a bad idea
+
+    if (shoot)
+    {
+      WeaponScript weapon = GetComponent<WeaponScript>();
+      if (weapon != null)
+      {
+        weapon.Attack(false);
+      }
+    }
   }
 }
