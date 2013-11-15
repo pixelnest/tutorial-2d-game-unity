@@ -8,12 +8,12 @@ public class HealthScript : MonoBehaviour
   /// <summary>
   /// Total hitpoints
   /// </summary>
-  public int HP = 2;
+  public int hp = 2;
 
   /// <summary>
   /// Enemy or player?
   /// </summary>
-  public bool IsEnemy = true;
+  public bool isEnemy = true;
 
   void OnTriggerEnter2D(Collider2D collider)
   {
@@ -22,14 +22,14 @@ public class HealthScript : MonoBehaviour
     if (shot != null)
     {
       // Avoid friendly fire
-      if (shot.IsEnemyShot != IsEnemy)
+      if (shot.isEnemyShot != isEnemy)
       {
-        HP -= shot.Damage;
+        hp -= shot.damage;
 
         // Destroy the shot
         Destroy(shot.gameObject); // Remember to always target the game object, otherwise you will just remove the script
 
-        if (HP <= 0)
+        if (hp <= 0)
         {
           // Explosion!
           SpecialEffectsHelper.Instance.Explosion(transform.position);

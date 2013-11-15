@@ -10,12 +10,12 @@ public class ShotScript : MonoBehaviour
   /// <summary>
   /// Damage inflicted
   /// </summary>
-  public int Damage = 1;
+  public int damage = 1;
 
   /// <summary>
   /// Projectile damage player or enemies?
   /// </summary>
-  public bool IsEnemyShot = false;
+  public bool isEnemyShot = false;
 
   void Start()
   {

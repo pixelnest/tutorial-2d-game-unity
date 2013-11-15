@@ -10,29 +10,29 @@ public class ScrollingScript : MonoBehaviour
   /// <summary>
   /// Scrolling speed
   /// </summary>
-  public Vector2 Speed = new Vector2(10, 10);
+  public Vector2 speed = new Vector2(10, 10);
 
   /// <summary>
   /// Moving direction
   /// </summary>
-  public Vector2 Direction = new Vector2(-1, 0);
+  public Vector2 direction = new Vector2(-1, 0);
 
   /// <summary>
   /// Movement should be applied to camera
   /// </summary>
-  public bool IsLinkedToCamera = false;
+  public bool isLinkedToCamera = false;
 
   /// <summary>
   /// Background is inifnite
   /// </summary>
-  public bool IsLooping = false;
+  public bool isLooping = false;
 
   private List<Transform> backgroundPart;
 
   void Start()
   {
     // For infinite background only
-    if (IsLooping)
+    if (isLooping)
     {
       // Get all part of the layer
       backgroundPart = new List<Transform>();
@@ -58,21 +58,21 @@ public class ScrollingScript : MonoBehaviour
   {
     // Movement
     Vector3 movement = new Vector3(
-      Speed.x * Direction.x,
-      Speed.y * Direction.y,
+      speed.x * direction.x,
+      speed.y * direction.y,
       0);
 
     movement *= Time.deltaTime;
     transform.Translate(movement);
 
     // Move the camera
-    if (IsLinkedToCamera)
+    if (isLinkedToCamera)
     {
       Camera.main.transform.Translate(movement);
     }
 
     // Loop
-    if (IsLooping)
+    if (isLooping)
     {
       // Get the first object
       Transform firstChild = backgroundPart.FirstOrDefault();

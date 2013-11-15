@@ -8,7 +8,7 @@ public class PlayerScript : MonoBehaviour
   /// <summary>
   /// 0 - The speed of the ship
   /// </summary>
-  public Vector2 Speed = new Vector2(25, 25);
+  public Vector2 speed = new Vector2(25, 25);
 
   void Update()
   {
@@ -18,8 +18,8 @@ public class PlayerScript : MonoBehaviour
 
     // 2 - Movement per direction
     Vector3 movement = new Vector3(
-      Speed.x * inputX,
-      Speed.y * inputY,
+      speed.x * inputX,
+      speed.y * inputY,
       0);
 
     // 3 - Relative to the time
