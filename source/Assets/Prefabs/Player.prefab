@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 107568fc3872397478d6e9fe8e6a3645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: {x: 25, y: 25}
+  speed: {x: 25, y: 25}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -82,8 +82,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e6d5ebdd0ac7c4faaa5fa757664904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShotPrefab: {fileID: 400000, guid: 7cbb5835641cb0a459084370ebd64725, type: 2}
-  ShootingRate: .25
+  shotPrefab: {fileID: 400000, guid: 7cbb5835641cb0a459084370ebd64725, type: 2}
+  shootingRate: .25
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -95,8 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6085c891add2ad44ea52438ae450eb57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 1
-  IsEnemy: 0
+  hp: 2
+  isEnemy: 1
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -108,10 +108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa86a03c60a9d204faa06ca3a1cbbb2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: {x: 1, y: 1}
-  Direction: {x: 1, y: 0}
-  IsLinkedToCamera: 1
-  IsLooping: 0
+  speed: {x: 1, y: 1}
+  direction: {x: -1, y: 0}
+  isLinkedToCamera: 1
+  isLooping: 0
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
