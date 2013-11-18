@@ -95,8 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6085c891add2ad44ea52438ae450eb57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 2
-  isEnemy: 1
+  hp: 1
+  isEnemy: 0
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: {x: 1, y: 1}
-  direction: {x: -1, y: 0}
+  direction: {x: 1, y: 0}
   isLinkedToCamera: 1
   isLooping: 0
 --- !u!212 &21200000

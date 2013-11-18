@@ -68,8 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bc66127b355f2e48adc1d0f9081d1bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: {x: 15, y: 15}
-  Direction: {x: 1, y: 0}
+  speed: {x: 15, y: 15}
+  direction: {x: -1, y: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -81,8 +81,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f40f32794ac29ee41aa51165c4d0c036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
-  IsEnemyShot: 0
+  damage: 1
+  isEnemyShot: 0
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

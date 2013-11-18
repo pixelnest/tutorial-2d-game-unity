@@ -8,7 +8,7 @@ public class HealthScript : MonoBehaviour
   /// <summary>
   /// Total hitpoints
   /// </summary>
-  public int hp = 2;
+  public int hp = 1;
 
   /// <summary>
   /// Enemy or player?
