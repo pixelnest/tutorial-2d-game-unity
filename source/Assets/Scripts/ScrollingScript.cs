@@ -75,8 +75,6 @@ public class ScrollingScript : MonoBehaviour
         Mathf.Abs(last.position.x - first.position.x),
         Mathf.Abs(last.position.y - first.position.y)
         );
-
-      Debug.Log(repeatableSize);
     }
   }
 
@@ -178,18 +176,12 @@ public class ScrollingScript : MonoBehaviour
 
           if (firstChild.renderer.IsVisibleFrom(Camera.main) == false)
           {
-            Debug.Log("****");
-            Debug.Log(firstChild.position);
-
             // Set position in the end
             firstChild.position = new Vector3(
               firstChild.position.x + ((repeatableSize.x + firstChild.renderer.bounds.size.x) * -1 * direction.x),
               firstChild.position.y + ((repeatableSize.y + firstChild.renderer.bounds.size.y) * -1 * direction.y),
               firstChild.position.z
               );
-
-            Debug.Log(firstChild.position);
-            Debug.Log(firstChild + "****");
 
             // The first part become the last one
             backgroundPart.Remove(firstChild);
