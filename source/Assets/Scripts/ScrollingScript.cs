@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
+
 /// <summary>
 /// Parallax scrolling script that should be assigned to a layer
 /// </summary>
@@ -28,12 +29,21 @@ public class ScrollingScript : MonoBehaviour
   public bool isLooping = false;
 
   private List<Transform> backgroundPart;
+  private Vector2 repeatableSize;
 
   void Start()
   {
     // For infinite background only
     if (isLooping)
     {
+      //---------------------------------------------------------------------------------
+      // 1 - Retrieve background objects
+      // -- We need to know what this background is made of
+      // -- Store a reference of each object
+      // -- Order those items in the order of the scrolling, so we know the item that will be the first to be recycled
+      // -- Compute the relative position between each part before they start moving
+      //---------------------------------------------------------------------------------
+
       // Get all part of the layer
       backgroundPart = new List<Transform>();
 
@@ -48,9 +58,25 @@ public class ScrollingScript : MonoBehaviour
         }
       }
 
+      if (backgroundPart.Count == 0)
+      {
+        Debug.LogError("Nothing to scroll!");
+      }
+
       // Sort by position 
-      // REM: left from right here, we would need to add few conditions to handle all scrolling directions
-      backgroundPart = backgroundPart.OrderBy(t => t.position.x).ToList();
+      // -- Depends on the scrolling direction
+      backgroundPart = backgroundPart.OrderBy(t => t.position.x * (-1 * direction.x)).ThenBy(t => t.position.y * (-1 * direction.y)).ToList();
+
+      // Get the size of the repeatable parts
+      var first = backgroundPart.First();
+      var last = backgroundPart.Last();
+
+      repeatableSize = new Vector2(
+        Mathf.Abs(last.position.x - first.position.x),
+        Mathf.Abs(last.position.y - first.position.y)
+        );
+
+      Debug.Log(repeatableSize);
     }
   }
 
@@ -74,32 +100,104 @@ public class ScrollingScript : MonoBehaviour
     // Loop
     if (isLooping)
     {
+      //---------------------------------------------------------------------------------
+      // 2 - Check if the object is before, in or after the camera bounds
+      //---------------------------------------------------------------------------------
+
+      // Camera borders
+      var dist = (transform.position - Camera.main.transform.position).z;
+      float leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).x;
+      float rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
+      float width = Mathf.Abs(rightBorder - leftBorder);
+      var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).y;
+      var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, dist)).y;
+      float height = Mathf.Abs(topBorder - bottomBorder);
+
+      // Determine entry and exit border using direction
+      Vector3 exitBorder = Vector3.zero;
+      Vector3 entryBorder = Vector3.zero;
+
+      if (direction.x < 0)
+      {
+        exitBorder.x = leftBorder;
+        entryBorder.x = rightBorder;
+      }
+      else if (direction.x > 0)
+      {
+        exitBorder.x = rightBorder;
+        entryBorder.x = leftBorder;
+      }
+
+      if (direction.y < 0)
+      {
+        exitBorder.y = bottomBorder;
+        entryBorder.y = topBorder;
+      }
+      else if (direction.y > 0)
+      {
+        exitBorder.y = topBorder;
+        entryBorder.y = bottomBorder;
+      }
+
       // Get the first object
       Transform firstChild = backgroundPart.FirstOrDefault();
 
       if (firstChild != null)
       {
+        bool checkVisible = false;
+
         // Check if we are after the camera
-        // Position first as IsVisibleFrom is a heavy method
-        if (firstChild.position.x < Camera.main.transform.position.x)
+        // The check is on the position first as IsVisibleFrom is a heavy method
+        // Here again, we check the border depending on the direction
+        if (direction.x != 0)
         {
+          if ((direction.x < 0 && (firstChild.position.x < exitBorder.x))
+          || (direction.x > 0 && (firstChild.position.x > exitBorder.x)))
+          {
+            checkVisible = true;
+          }
+        }
+        if (direction.y != 0)
+        {
+          if ((direction.y < 0 && (firstChild.position.y < exitBorder.y))
+          || (direction.y > 0 && (firstChild.position.y > exitBorder.y)))
+          {
+            checkVisible = true;
+          }
+        }
+
+        // Check if the sprite is really visible on the camera or not
+        if (checkVisible)
+        {
+          //---------------------------------------------------------------------------------
+          // 3 - The object was in the camera bounds but isn't anymore.
+          // -- We need to recycle it
+          // -- That means he was the first, he's now the last
+          // -- And we physically moves him to the further position possible
+          //---------------------------------------------------------------------------------
+
           if (firstChild.renderer.IsVisibleFrom(Camera.main) == false)
           {
-            // Get the last positions
-            Transform lastChild = backgroundPart.LastOrDefault();
-            Vector3 lastPosition = lastChild.transform.position;
-            Vector3 lastSize = (lastChild.renderer.bounds.max - lastChild.renderer.bounds.min);
+            Debug.Log("****");
+            Debug.Log(firstChild.position);
 
-            // Set position after
-            // REM: here too it works for horizontal scrolling only
-            firstChild.position = new Vector3(lastPosition.x + lastSize.x, firstChild.position.y, firstChild.position.z);
+            // Set position in the end
+            firstChild.position = new Vector3(
+              firstChild.position.x + ((repeatableSize.x + firstChild.renderer.bounds.size.x) * -1 * direction.x),
+              firstChild.position.y + ((repeatableSize.y + firstChild.renderer.bounds.size.y) * -1 * direction.y),
+              firstChild.position.z
+              );
 
-            // Set as last
+            Debug.Log(firstChild.position);
+            Debug.Log(firstChild + "****");
+
+            // The first part become the last one
             backgroundPart.Remove(firstChild);
             backgroundPart.Add(firstChild);
           }
         }
       }
+
     }
   }
 }
