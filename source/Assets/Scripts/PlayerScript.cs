@@ -35,7 +35,7 @@ public class PlayerScript : MonoBehaviour
     if (shoot)
     {
       WeaponScript weapon = GetComponent<WeaponScript>();
-      if (weapon != null)
+      if (weapon != null && weapon.CanAttack)
       {
         weapon.Attack(false);
         SoundEffectsHelper.Instance.MakePlayerShotSound();

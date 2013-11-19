@@ -3284,32 +3284,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 400000, guid: 8b9024d0a8ea0a14a8793becc7d30d22, type: 2}
   shootingRate: .75
---- !u!1 &949836174
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 949836175}
-  m_Layer: 0
-  m_Name: GUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &949836175
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 949836174}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
 --- !u!1001 &966392091
 Prefab:
   m_ObjectHideFlags: 0
@@ -5113,28 +5087,28 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1722743505}
-  - {fileID: 1163601543}
-  - {fileID: 621866570}
-  - {fileID: 1117747514}
-  - {fileID: 544527476}
-  - {fileID: 2003893775}
-  - {fileID: 2097693028}
   - {fileID: 553242535}
-  - {fileID: 575083447}
-  - {fileID: 1445096581}
   - {fileID: 585881415}
-  - {fileID: 140783967}
-  - {fileID: 1931169885}
-  - {fileID: 1329300455}
+  - {fileID: 1117747514}
+  - {fileID: 1694264325}
+  - {fileID: 1163601543}
   - {fileID: 1905698365}
   - {fileID: 427696418}
-  - {fileID: 1308827641}
-  - {fileID: 101079304}
-  - {fileID: 1694264325}
-  - {fileID: 806802386}
+  - {fileID: 1445096581}
   - {fileID: 1859329288}
-  - {fileID: 573864948}
+  - {fileID: 544527476}
+  - {fileID: 1308827641}
+  - {fileID: 1329300455}
+  - {fileID: 101079304}
+  - {fileID: 575083447}
+  - {fileID: 806802386}
+  - {fileID: 140783967}
+  - {fileID: 2097693028}
   - {fileID: 385302005}
+  - {fileID: 573864948}
+  - {fileID: 2003893775}
+  - {fileID: 621866570}
+  - {fileID: 1931169885}
   m_Father: {fileID: 577064053}
 --- !u!1 &1425925155
 GameObject:
