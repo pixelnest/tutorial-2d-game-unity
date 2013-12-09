@@ -15,10 +15,10 @@ public class HealthScript : MonoBehaviour
   /// </summary>
   public bool isEnemy = true;
 
-  void OnTriggerEnter2D(Collider2D collider)
+  void OnTriggerEnter2D(Collider2D otherCollider)
   {
     // Is this a shot?
-    ShotScript shot = collider.gameObject.GetComponent<ShotScript>();
+    ShotScript shot = otherCollider.gameObject.GetComponent<ShotScript>();
     if (shot != null)
     {
       // Avoid friendly fire
