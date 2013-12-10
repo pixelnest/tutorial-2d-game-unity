@@ -10,23 +10,19 @@ public class PlayerScript : MonoBehaviour
   /// </summary>
   public Vector2 speed = new Vector2(25, 25);
 
+  // 1 - Store the movement
+  private Vector2 movement;
+
   void Update()
   {
-    // 1 - Retrieve axis information
+    // 2 - Retrieve axis information
     float inputX = Input.GetAxis("Horizontal");
     float inputY = Input.GetAxis("Vertical");
 
-    // 2 - Movement per direction
-    Vector3 movement = new Vector3(
+    // 3 - Movement per direction
+    movement = new Vector2(
       speed.x * inputX,
-      speed.y * inputY,
-      0);
-
-    // 3 - Relative to the time
-    movement *= Time.deltaTime;
-
-    // 4 - Move the game object
-    transform.Translate(movement);
+      speed.y * inputY);
 
     // 5 - Shooting
     bool shoot = Input.GetButtonDown("Fire1");
@@ -54,6 +50,12 @@ public class PlayerScript : MonoBehaviour
               Mathf.Clamp(transform.position.y, topBorder, bottomBorder),
               transform.position.z
               ); 
+  }
+
+  void FixedUpdate() 
+  {
+	// 4 - Move the game object
+	rigidbody2D.velocity = movement;
   }
 
   void OnDestroy()

@@ -106,10 +106,11 @@ public class ScrollingScript : MonoBehaviour
       var dist = (transform.position - Camera.main.transform.position).z;
       float leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).x;
       float rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
-      float width = Mathf.Abs(rightBorder - leftBorder);
+//      float width = Mathf.Abs(rightBorder - leftBorder);
+
       var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).y;
       var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, dist)).y;
-      float height = Mathf.Abs(topBorder - bottomBorder);
+//      float height = Mathf.Abs(topBorder - bottomBorder);
 
       // Determine entry and exit border using direction
       Vector3 exitBorder = Vector3.zero;
