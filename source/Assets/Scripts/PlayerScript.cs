@@ -64,4 +64,39 @@ public class PlayerScript : MonoBehaviour
     // Add it to the parent, as this game object is likely to be destroyed immediately
     transform.parent.gameObject.AddComponent<GameOverScript>();
   }
+
+
+  void OnCollisionEnter2D(Collision2D collision)
+  {
+    bool damagePlayer = false;
+
+    // Collision with enemy
+    EnemyScript enemy = collision.gameObject.GetComponent<EnemyScript>();
+    if (enemy != null)
+    {
+      // Kill the enemy
+      HealthScript enemyHealth = enemy.GetComponent<HealthScript>();
+      if (enemyHealth != null) enemyHealth.Damage(enemyHealth.hp);
+
+      damagePlayer = true;
+    }
+
+    // Collision with the boss
+    BossScript boss = collision.gameObject.GetComponent<BossScript>();
+    if (boss != null)
+    {
+      // Boss lose some hp too
+      HealthScript bossHealth = boss.GetComponent<HealthScript>();
+      if (bossHealth != null) bossHealth.Damage(5);
+
+      damagePlayer = true;
+    }
+
+    // Damage the player
+    if (damagePlayer)
+    {
+      HealthScript playerHealth = this.GetComponent<HealthScript>();
+      if (playerHealth != null) playerHealth.Damage(1);
+    }
+  }
 }

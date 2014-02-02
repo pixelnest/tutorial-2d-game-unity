@@ -15,6 +15,25 @@ public class HealthScript : MonoBehaviour
   /// </summary>
   public bool isEnemy = true;
 
+  /// <summary>
+  /// Inflicts damage and check if the object should be destroyed
+  /// </summary>
+  /// <param name="damageCount"></param>
+  public void Damage(int damageCount)
+  {
+    hp -= damageCount;
+
+    if (hp <= 0)
+    {
+      // Explosion!
+      SpecialEffectsHelper.Instance.Explosion(transform.position);
+      SoundEffectsHelper.Instance.MakeExplosionSound();
+
+      // Dead!
+      Destroy(gameObject);
+    }
+  }
+
   void OnTriggerEnter2D(Collider2D otherCollider)
   {
     // Is this a shot?
@@ -24,20 +43,10 @@ public class HealthScript : MonoBehaviour
       // Avoid friendly fire
       if (shot.isEnemyShot != isEnemy)
       {
-        hp -= shot.damage;
+        Damage(shot.damage);
 
         // Destroy the shot
         Destroy(shot.gameObject); // Remember to always target the game object, otherwise you will just remove the script
-
-        if (hp <= 0)
-        {
-          // Explosion!
-          SpecialEffectsHelper.Instance.Explosion(transform.position);
-          SoundEffectsHelper.Instance.MakeExplosionSound();
-
-          // Dead!
-          Destroy(gameObject);
-        }
       }
     }
   }
