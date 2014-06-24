@@ -49,20 +49,25 @@ public class PlayerScript : MonoBehaviour
               Mathf.Clamp(transform.position.x, leftBorder, rightBorder),
               Mathf.Clamp(transform.position.y, topBorder, bottomBorder),
               transform.position.z
-              ); 
+              );
   }
 
-  void FixedUpdate() 
+  void FixedUpdate()
   {
-	// 4 - Move the game object
-	rigidbody2D.velocity = movement;
+    // 4 - Move the game object
+    rigidbody2D.velocity = movement;
   }
 
   void OnDestroy()
   {
-    // Game Over
-    // Add it to the parent, as this game object is likely to be destroyed immediately
-    transform.parent.gameObject.AddComponent<GameOverScript>();
+    // Check hat the player is dead and not that we are not closing Unity
+    HealthScript playerHealth = this.GetComponent<HealthScript>();
+    if (playerHealth != null && playerHealth.hp <= 0)
+    {
+      // Game Over
+      // Add it to the parent, as this game object is likely to be destroyed immediately
+      transform.parent.gameObject.AddComponent<GameOverScript>();
+    }
   }
 
 

@@ -18,7 +18,7 @@ public class MenuScript : MonoBehaviour
     const int buttonHeight = 60;
 
     GUI.skin = skin;
-    Debug.Log("skin: " + skin);
+
     // Draw a button to start the game
     if (GUI.Button(
       // Center in X, 2/3 of the height in Y
