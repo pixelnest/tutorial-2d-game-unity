@@ -60,7 +60,7 @@ public class PlayerScript : MonoBehaviour
 
   void OnDestroy()
   {
-    // Check hat the player is dead and not that we are not closing Unity
+    // Check that the player is dead, as we is also callled when closing Unity
     HealthScript playerHealth = this.GetComponent<HealthScript>();
     if (playerHealth != null && playerHealth.hp <= 0)
     {
