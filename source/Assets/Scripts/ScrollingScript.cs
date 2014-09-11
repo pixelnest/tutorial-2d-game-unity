@@ -1,17 +1,22 @@
-// Copyright © 2014 Pixelnest Studio
-// This file is subject to the terms and conditions defined in
-// file 'LICENSE.md', which is part of this source code package.
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+
 
 /// <summary>
-/// Parallax scrolling script that should be assigned to a background layer
+/// Parallax scrolling script that should be assigned to a layer
 /// </summary>
-public class ScrollingScript : ScrollingScript
+public class ScrollingScript : MonoBehaviour
 {
-  public bool limitScrolling = false;
-  public Vector2 maxScrolling = Vector2.zero;
+  /// <summary>
+  /// Scrolling speed
+  /// </summary>
+  public Vector2 speed = new Vector2(10, 10);
+
+  /// <summary>
+  /// Moving direction
+  /// </summary>
+  public Vector2 direction = new Vector2(-1, 0);
 
   /// <summary>
   /// Movement should be applied to camera
@@ -23,123 +28,85 @@ public class ScrollingScript : ScrollingScript
   /// </summary>
   public bool isLooping = false;
 
-  /// <summary>
-  /// Follow the main scroll
-  /// </summary>
-  public bool relativeToLogicalScrolling;
-
-  private bool previousLooping;
   private List<Transform> backgroundPart;
   private Vector2 repeatableSize;
   private Vector3 gap = Vector3.zero;
 
-  protected override void AwakeMe()
-  {
-    ScrollValue = Vector3.zero;
-    currentSpeed = speed;
-  }
-
-  protected override void StartMe()
+  void Start()
   {
     // For infinite background only
     if (isLooping)
     {
-      InitializeLooping();
-    }
-  }
+      //---------------------------------------------------------------------------------
+      // 1 - Retrieve background objects
+      // -- We need to know what this background is made of
+      // -- Store a reference of each object
+      // -- Order those items in the order of the scrolling, so we know the item that will be the first to be recycled
+      // -- Compute the relative position between each part before they start moving
+      //---------------------------------------------------------------------------------
 
-  private void InitializeLooping()
-  {
-    //---------------------------------------------------------------------------------
-    // 1 - Retrieve background objects
-    // -- We need to know what this background is made of
-    // -- Store a reference of each object
-    // -- Order those items in the order of the scrolling, so we know the item that will be the first to be recycled
-    // -- Compute the relative position between each part before they start moving
-    //---------------------------------------------------------------------------------
+      // Get all part of the layer
+      backgroundPart = new List<Transform>();
 
-    // Get all part of the layer
-    backgroundPart = new List<Transform>();
-
-    for (int i = 0; i < transform.childCount; i++)
-    {
-      Transform child = transform.GetChild(i);
-
-      // Only visible children
-      if (child.renderer != null)
+      for (int i = 0; i < transform.childCount; i++)
       {
-        backgroundPart.Add(child);
+        Transform child = transform.GetChild(i);
 
-        // First element
-        if (backgroundPart.Count == 1)
+        // Only visible children
+        if (child.renderer != null)
         {
-          // Gap is the space between zero and the first element. 
-          // We need it when we loop.
-          gap = child.transform.position;
+          backgroundPart.Add(child);
+          
+          // First element
+          if (backgroundPart.Count == 1)
+          {
+            // Gap is the space between zero and the first element. 
+            // We need it when we loop.
+            gap = child.transform.position;
+          }
         }
       }
+
+      if (backgroundPart.Count == 0)
+      {
+        Debug.LogError("Nothing to scroll!");
+      }
+
+      // Sort by position 
+      // -- Depends on the scrolling direction
+      backgroundPart = backgroundPart.OrderBy(t => t.position.x * (-1 * direction.x)).ThenBy(t => t.position.y * (-1 * direction.y)).ToList();
+
+      // Get the size of the repeatable parts
+      var first = backgroundPart.First();
+      var last = backgroundPart.Last();
+
+      repeatableSize = new Vector2(
+        Mathf.Abs(last.position.x - first.position.x),
+        Mathf.Abs(last.position.y - first.position.y)
+        );
     }
-
-    if (backgroundPart.Count == 0)
-    {
-      Debug.LogError("Nothing to scroll!");
-    }
-
-    // Sort by position 
-    // -- Depends on the scrolling direction
-
-    // ThenBy is not available on iOS
-    //backgroundPart = backgroundPart.OrderBy(t => t.position.x * (-1 * direction.x)).ThenBy(t => t.position.y * (-1 * direction.y)).ToList();
-
-    if (direction.x != 0)
-    {
-      backgroundPart = backgroundPart.OrderBy(t => t.position.x * (-1 * direction.x)).ToList();
-    }
-    if (direction.y != 0)
-    {
-      backgroundPart = backgroundPart.OrderBy(t => t.position.y * (-1 * direction.y)).ToList();
-    }
-
-    // Get the size of the repeatable parts
-    var first = backgroundPart.First();
-    var last = backgroundPart.Last();
-
-    repeatableSize = new Vector2(
-      Mathf.Abs(last.position.x - first.position.x),
-      Mathf.Abs(last.position.y - first.position.y)
-      );
   }
 
-  protected override Vector3 GetMovement()
+  void Update()
   {
-    Vector3 baseMovement = base.GetMovement();
+    // Movement
+    Vector3 movement = new Vector3(
+      speed.x * direction.x,
+      speed.y * direction.y,
+      0);
 
-    if (relativeToLogicalScrolling)
+    movement *= Time.deltaTime;
+    transform.Translate(movement);
+
+    // Move the camera
+    if (isLinkedToCamera)
     {
-      baseMovement += (PlayerScript.Scrolling != null ? PlayerScript.Scrolling.ScrollFrameValue : Vector3.zero);
+      Camera.main.transform.Translate(movement);
     }
 
-    if (limitScrolling)
-    {
-      Vector2 newPosition = baseMovement + transform.position;
-
-      if (newPosition.x * direction.x > maxScrolling.x) baseMovement.x = 0;
-      if (newPosition.y * direction.y > maxScrolling.y) baseMovement.y = 0;
-    }
-
-    return baseMovement;
-  }
-
-  protected override void UpdateMe()
-  {
     // Loop
     if (isLooping)
     {
-      if (previousLooping == false)
-      {
-        InitializeLooping();
-      }
-
       //---------------------------------------------------------------------------------
       // 2 - Check if the object is before, in or after the camera bounds
       //---------------------------------------------------------------------------------
@@ -148,11 +115,11 @@ public class ScrollingScript : ScrollingScript
       var dist = (transform.position - Camera.main.transform.position).z;
       float leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).x;
       float rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
-      //      float width = Mathf.Abs(rightBorder - leftBorder);
+//      float width = Mathf.Abs(rightBorder - leftBorder);
 
       var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).y;
       var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, dist)).y;
-      //      float height = Mathf.Abs(topBorder - bottomBorder);
+//      float height = Mathf.Abs(topBorder - bottomBorder);
 
       // Determine entry and exit border using direction
       Vector3 exitBorder = Vector3.zero;
@@ -226,7 +193,7 @@ public class ScrollingScript : ScrollingScript
               firstChild.position.z
               );
 
-            gap = Vector2.zero;
+              gap = Vector2.zero;
 
             // The first part become the last one
             backgroundPart.Remove(firstChild);
@@ -235,7 +202,6 @@ public class ScrollingScript : ScrollingScript
         }
       }
 
-    } // if looping
-    previousLooping = isLooping;
+    }
   }
 }
