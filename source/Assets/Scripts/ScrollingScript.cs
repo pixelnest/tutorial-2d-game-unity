@@ -63,6 +63,9 @@ public class ScrollingScript : MonoBehaviour
             // Gap is the space between zero and the first element. 
             // We need it when we loop.
             gap = child.transform.position;
+            
+            if (direction.x == 0) gap.x = 0;
+            if (direction.y == 0) gap.y = 0;
           }
         }
       }
@@ -192,8 +195,6 @@ public class ScrollingScript : MonoBehaviour
               firstChild.position.y + ((repeatableSize.y + firstChild.renderer.bounds.size.y) * -1 * direction.y),
               firstChild.position.z
               );
-
-              gap = Vector2.zero;
 
             // The first part become the last one
             backgroundPart.Remove(firstChild);
