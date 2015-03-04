@@ -1,4 +1,4 @@
-Make a 2D game with Unity 4.3
+Make a 2D game with Unity 5
 =============================
 
 This is the repository related to our tutorial [Creating a 2D game with Unity](http://pixelnest.io/tutorials/2d-game-unity/).
