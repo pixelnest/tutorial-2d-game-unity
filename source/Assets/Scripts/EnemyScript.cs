@@ -24,7 +24,7 @@ public class EnemyScript : MonoBehaviour
 
     // Disable everything
     // -- collider
-    collider2D.enabled = false;
+    GetComponent<Collider2D>().enabled = false;
     // -- Moving
     moveScript.enabled = false;
     // -- Shooting
@@ -39,7 +39,7 @@ public class EnemyScript : MonoBehaviour
     // Check if the enemy has spawned
     if (hasSpawn == false)
     {
-      if (renderer.IsVisibleFrom(Camera.main))
+      if (GetComponent<Renderer>().IsVisibleFrom(Camera.main))
       {
         Spawn();
       }
@@ -57,7 +57,7 @@ public class EnemyScript : MonoBehaviour
       }
 
       // Out of camera?
-      if (renderer.IsVisibleFrom(Camera.main) == false)
+      if (GetComponent<Renderer>().IsVisibleFrom(Camera.main) == false)
       {
         Destroy(gameObject);
       }
@@ -70,7 +70,7 @@ public class EnemyScript : MonoBehaviour
 
     // Enable everything
     // -- Collider
-    collider2D.enabled = true;
+    GetComponent<Collider2D>().enabled = true;
     // -- Moving
     moveScript.enabled = true;
     // -- Shooting

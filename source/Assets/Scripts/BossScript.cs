@@ -42,7 +42,7 @@ public class BossScript : MonoBehaviour
 
     // Disable everything
     // -- collider
-    collider2D.enabled = false;
+    GetComponent<Collider2D>().enabled = false;
     // -- Moving
     moveScript.enabled = false;
     // -- Shooting
@@ -115,7 +115,7 @@ public class BossScript : MonoBehaviour
         }
 
         // Are we at the target? If so, find a new one
-        if (collider2D.OverlapPoint(positionTarget))
+        if (GetComponent<Collider2D>().OverlapPoint(positionTarget))
         {
           // Reset, will be set at the next frame
           positionTarget = Vector2.zero;
@@ -136,7 +136,7 @@ public class BossScript : MonoBehaviour
 
     // Enable everything
     // -- Collider
-    collider2D.enabled = true;
+    GetComponent<Collider2D>().enabled = true;
     // -- Moving
     moveScript.enabled = true;
     // -- Shooting

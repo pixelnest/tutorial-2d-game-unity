@@ -53,7 +53,7 @@ public class ScrollingScript : MonoBehaviour
         Transform child = transform.GetChild(i);
 
         // Only visible children
-        if (child.renderer != null)
+        if (child.GetComponent<Renderer>() != null)
         {
           backgroundPart.Add(child);
           
@@ -187,12 +187,12 @@ public class ScrollingScript : MonoBehaviour
           // -- And we physically moves him to the further position possible
           //---------------------------------------------------------------------------------
 
-          if (firstChild.renderer.IsVisibleFrom(Camera.main) == false)
+          if (firstChild.GetComponent<Renderer>().IsVisibleFrom(Camera.main) == false)
           {
             // Set position in the end
             firstChild.position = gap + new Vector3(
-              firstChild.position.x + ((repeatableSize.x + firstChild.renderer.bounds.size.x) * -1 * direction.x),
-              firstChild.position.y + ((repeatableSize.y + firstChild.renderer.bounds.size.y) * -1 * direction.y),
+              firstChild.position.x + ((repeatableSize.x + firstChild.GetComponent<Renderer>().bounds.size.x) * -1 * direction.x),
+              firstChild.position.y + ((repeatableSize.y + firstChild.GetComponent<Renderer>().bounds.size.y) * -1 * direction.y),
               firstChild.position.z
               );
 
